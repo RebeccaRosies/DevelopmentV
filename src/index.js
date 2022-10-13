@@ -1,17 +1,28 @@
-require('dotenv').config({ path: './.env' });
+require('dotenv').config({
+    path: './.env'
+});
+
 const {
-    MongoClient,
     ObjectId
 } = require('mongodb');
+
+const {
+    connectToDb,
+    client
+} = require('./dbConnection');
+
+
+const collections = {}
+
+connectToDb()
+    .then((collection) => {
+        collections["les1"] = collection;
+    });
+
 const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-
-const url = process.env.DBURL;
-const client = new MongoClient(url);
-const dbName = "DevV";
-const port = 3000;
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -24,26 +35,17 @@ app.get("/", (request, response) => {
     })
 })
 
-
 app.get("/names", async (req, res) => {
     try {
-        //connect to the database
-        await client.connect();
-        console.log("Connected correctly to server");
-        const db = client.db(dbName);
-        const col = db.collection("les1"); // Use the collection "les1"
-
-        const myNames = await col.find({}).toArray(); // Find document & convert it to an array
+        const myNames = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
         console.log(myNames); // Print to the console
 
         res.status(200).send(myNames); //Send back the data with the response
     } catch (err) {
-        console.log('error');
+        console.log('error', err);
         res.status(500).send({
             error: 'an error has occured'
         });
-    } finally {
-        await client.close();
     }
 })
 
@@ -54,12 +56,6 @@ app.get("/names", async (req, res) => {
 
 app.post('/names', async (req, res) => {
     try {
-        //connect with database
-        await client.connect();
-        console.log("Connected correctly to server");
-        const db = client.db(dbName);
-        console.log("getting", dbName)
-        const col = db.collection("les1"); // Use the collection "les1"
         if (!req.body.name || !req.body.lastname) {
             res.status(400).send('bad result, missing name or lastname');
             return;
@@ -73,34 +69,27 @@ app.post('/names', async (req, res) => {
 
         console.log(newName)
         //insert into database
-        let insertResult = await col.insertOne(newName);
+        let insertResult = await collections["les1"].insertOne(newName);
+        console.log(insertResult)
         res.send(insertResult)
         return;
 
     } catch (error) {
-        console.log("error");
+        console.log("error", error);
         res.status(500).send({
             error: 'an error has occured',
             value: error
         });
-    } finally {
-        await client.close();
     }
 })
 
 app.delete('/names', async (req, res) => {
     try {
-        //connect to the database
-        await client.connect();
-        console.log("Connected correctly to server");
-        const db = client.db(dbName);
-        const col = db.collection("les1"); // Use the collection "les1"
-
         const message = {
             deleted: "All names deleted"
         }
         // Deleting the names
-        const result = await col.deleteMany();
+        const result = await collections["les1"].deleteMany();
         if (result.deletedCount >= 1) {
             res
                 .status(200)
@@ -115,8 +104,6 @@ app.delete('/names', async (req, res) => {
         res.status(500).send({
             error: 'an error has occured',
         });
-    } finally {
-        await client.close();
     }
 })
 
@@ -127,15 +114,7 @@ app.put("/name/:id", async (req, res) => {
         value: "Missing name or lastname"
     }
 
-
     try {
-        //read the file
-        //connect to the database
-        await client.connect();
-        console.log("Connected correctly to server");
-        const db = client.db(dbName);
-        const col = db.collection("les1"); // Use the collection "les1"
-
         if (!req.body.name || !req.body.lastname) {
             res.status(400).send(error);
             return;
@@ -156,7 +135,7 @@ app.put("/name/:id", async (req, res) => {
         };
         console.log(query, updateName);
         // Updating the name
-        const result = await col.updateOne(query, {
+        const result = await collections["les1"].updateOne(query, {
             $set: updateName
         });
 
@@ -167,8 +146,6 @@ app.put("/name/:id", async (req, res) => {
         res.status(500).send({
             error: "something went wrong",
         });
-    } finally {
-        await client.close();
     }
 });
 
