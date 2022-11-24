@@ -1,0 +1,24 @@
+version: "3.2"
+services: 
+  api:
+    build: ./images/api
+    ports: 
+      - 80:3000
+    volumes:
+      - ./images/api/src:/usr/app/src
+    environment: 
+      DBURL: 
+  
+  store: 
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ./_volumes/mongo:/data/db
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: ${DBUSER} 
+      MONGO_INITDB_ROOT_PASSWORD: ${DBPASSWORD}
+      MONGO_INITDB_DATABASE: ${DBNAME}
+    
+
+  

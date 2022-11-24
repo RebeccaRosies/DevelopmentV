@@ -118,3 +118,5 @@ out
 
 #credentials
 credentials.js
+
+/images/*/node_modules
