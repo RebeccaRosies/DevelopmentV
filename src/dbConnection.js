@@ -1,17 +1,13 @@
-require('dotenv').config({
-    path: './.env'
-});
-
 const {
     MongoClient,
     ObjectId
 } = require('mongodb');
 
-
 const url = process.env.DBURL;
+
 const client = new MongoClient(url);
 const dbName = "DevV";
-const port = 3000;
+const port = 80;
 
 async function connectToDb() {
     await client.connect();
