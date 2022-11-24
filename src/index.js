@@ -11,7 +11,6 @@ const {
     client
 } = require('./dbConnection');
 
-
 const collections = {}
 
 connectToDb()
@@ -35,12 +34,12 @@ app.get("/", (request, response) => {
     })
 })
 
-app.get("/names", async (req, res) => {
+app.get("/dataLog", async (req, res) => {
     try {
-        const myNames = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
-        console.log(myNames); // Print to the console
+        const myData = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
+        console.log(myData); // Print to the console
 
-        res.status(200).send(myNames); //Send back the data with the response
+        res.status(200).send(myData); //Send back the data with the response
     } catch (err) {
         console.log('error', err);
         res.status(500).send({
@@ -54,22 +53,22 @@ app.get("/names", async (req, res) => {
 @param lastname = last name of the person
  */
 
-app.post('/names', async (req, res) => {
+app.post('/dataLog', async (req, res) => {
     try {
-        if (!req.body.name || !req.body.lastname) {
+        if (req.body.speed == undefined || req.body.safe == undefined) {
             res.status(400).send('bad result, missing name or lastname');
             return;
         }
 
         //construct a document
-        let newName = {
-            name: req.body.name,
-            lastname: req.body.lastname
+        let newData = {
+            speed: req.body.speed,
+            safe: req.body.safe
         }
 
-        console.log(newName)
+        console.log(newData)
         //insert into database
-        let insertResult = await collections["les1"].insertOne(newName);
+        let insertResult = await collections["les1"].insertOne(newData);
         console.log(insertResult)
         res.send(insertResult)
         return;
@@ -83,10 +82,10 @@ app.post('/names', async (req, res) => {
     }
 })
 
-app.delete('/names', async (req, res) => {
+app.delete('/dataLog', async (req, res) => {
     try {
         const message = {
-            deleted: "All names deleted"
+            deleted: "All data deleted"
         }
         // Deleting the names
         const result = await collections["les1"].deleteMany();
@@ -107,15 +106,15 @@ app.delete('/names', async (req, res) => {
     }
 })
 
-app.put("/name/:id", async (req, res) => {
+app.put("/dataLog/:id", async (req, res) => {
     // check for body data
     const error = {
         error: "Bad request",
-        value: "Missing name or lastname"
+        value: "Missing speed or safe"
     }
 
     try {
-        if (!req.body.name || !req.body.lastname) {
+        if (req.body.speed == undefined|| req.body.safe == undefined) {
             res.status(400).send(error);
             return;
         }
@@ -125,18 +124,18 @@ app.put("/name/:id", async (req, res) => {
             _id: ObjectId(req.params.id)
         };
         const message = {
-            deleted: "Name updated"
+            deleted: "Data updated"
         }
 
         // update a name
-        const updateName = {
-            name: req.body.name,
-            lastname: req.body.lastname
+        const updateData = {
+            speed: req.body.speed,
+            safe: req.body.safe
         };
-        console.log(query, updateName);
+        console.log(query, updateData);
         // Updating the name
         const result = await collections["les1"].updateOne(query, {
-            $set: updateName
+            $set: updateData
         });
 
         // Send back success message
