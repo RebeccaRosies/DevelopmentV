@@ -120,3 +120,4 @@ out
 credentials.js
 
 /images/*/node_modules
+/_volumes
