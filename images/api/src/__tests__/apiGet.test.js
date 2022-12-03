@@ -1,10 +1,22 @@
 const supertest = require("supertest")
 const s = require("../server.js")
 
-
-
 describe('GET /dataLog', () => {
-  it('tests if the get endpoint gets an array of items', () => {
+  it('tests if the get endpoint makes a succesful connection', () => {
+    s().then((app) => {
+      const request = supertest(app);
+
+      return request
+        .get('/dataLog')
+        .set('Accept', 'application/json')
+
+        .expect('Content-Type', /json/)
+
+        .expect(200)
+    });
+  });
+
+  it('tests if the get endpoint gets a response with the correct type of data', () => {
     s().then((app) => {
       const request = supertest(app);
 
@@ -28,6 +40,11 @@ describe('GET /dataLog', () => {
     });
   });
 })
+/* describe('test a second test', () => {
+ test('testing to see if this works'), () => {
+  expect(1).toBe(1);
+}
+)} */
 
 
 
