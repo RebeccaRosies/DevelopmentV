@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon --legacy-watch src/index.js",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "test-ci": "jest --forceExit --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
