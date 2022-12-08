@@ -8,6 +8,11 @@ services:
       - ./images/api/src:/usr/app/src
     environment: 
       DBURL: 
+
+    watchtower:
+      image: containrrr/watchtower
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   
   store: 
     image: mongo:latest
@@ -19,6 +24,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DBUSER} 
       MONGO_INITDB_ROOT_PASSWORD: ${DBPASSWORD}
       MONGO_INITDB_DATABASE: ${DBNAME}
+    
     
 
   
