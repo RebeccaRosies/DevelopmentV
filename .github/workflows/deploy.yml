@@ -8,9 +8,9 @@ on:
     
 env: 
   DBUSER: ${{ secrets.DBUSER }}
-  DBPASSWORD: ${{ secrets. DBPASSWORD }}
+  DBPASSWORD: ${{ secrets.DBPASSWORD }}
   DBNAME: "test"
-  DBURL: "store"
+  DBURL: ${{ secrets.DBURL }}
 
 jobs:
   test:
@@ -27,13 +27,13 @@ jobs:
       
       - name: run npm install
         run: |
-          cd api
+          cd images/api
           npm ci
           
       - name: run tests
         run: |
-          cd api
-          npm run test-ci
+          cd images/api
+          npm run test
 
   build:
     needs: test
