@@ -23,7 +23,7 @@ const setup = () =>
                 resolve(app)
             })
             .catch((error)=>{
-                console.error(collection)
+                console.error(error)
             })
     })
 
