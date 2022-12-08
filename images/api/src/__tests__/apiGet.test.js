@@ -37,15 +37,9 @@ describe('GET /dataLog', () => {
             ])
           );
         });
-    });
+    })
+    
   });
+
+  
 })
-/* describe('test a second test', () => {
- test('testing to see if this works'), () => {
-  expect(1).toBe(1);
-}
-)} */
-
-
-
-

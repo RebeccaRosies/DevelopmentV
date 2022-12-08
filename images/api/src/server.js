@@ -21,7 +21,10 @@ const setup = () =>
 
                 collections["les1"] = collection;
                 resolve(app)
-            });
+            })
+            .catch((error)=>{
+                console.error(collection)
+            })
     })
 
 const express = require("express");
