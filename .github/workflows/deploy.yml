@@ -27,12 +27,12 @@ jobs:
       
       - name: run npm install
         run: |
-          cd api
+          cd images/api
           npm ci
           
       - name: run tests
         run: |
-          cd api
+          cd images/api
           npm run test-ci
 
   build:
