@@ -8,9 +8,9 @@ on:
     
 env: 
   DBUSER: ${{ secrets.DBUSER }}
-  DBPASSWORD: ${{ secrets. DBPASSWORD }}
+  DBPASSWORD: ${{ secrets.DBPASSWORD }}
   DBNAME: "test"
-  DBURL: "store"
+  DBURL: ${{ secrets.DBURL }}
 
 jobs:
   test:
