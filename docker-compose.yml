@@ -24,6 +24,11 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${DBUSER} 
       MONGO_INITDB_ROOT_PASSWORD: ${DBPASSWORD}
       MONGO_INITDB_DATABASE: ${DBNAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DBUSER -d $DBNAME "]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     
     
 
