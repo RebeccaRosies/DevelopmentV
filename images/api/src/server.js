@@ -14,7 +14,7 @@ const {
 const collections = {}
 
 const setup = () =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve, reject) => { 
 
         connectToDb()
             .then((collection) => {
@@ -25,9 +25,10 @@ const setup = () =>
             .catch((error)=>{
                 console.error(error)
             })
-    })
+     }) 
+ 
 
-const express = require("express");
+const express = require('express');
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -48,13 +49,20 @@ app.get("/dataLog", async (req, res) => {
         const myData = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
         console.log(myData); // Print to the console
 
-        res.status(200).send(myData); //Send back the data with the response
+        //res.status(200).send(myData); //Send back the data with the response
+        
+        try{
+            res.status(200).send(myData)
+        } catch (error){
+            res.status(400).send({message:'your data was not found'})
+        }
+    
     } catch (err) {
         console.log('error', err);
         res.status(500).send({
             error: 'an error has occured'
         });
-    }
+    } 
 })
 
 /* 
