@@ -15,6 +15,18 @@ scene.add(cube);
 camera.position.z = 5;
 
 /* --------------------------------------------------- */
+function getData(){
+    fetch('mongodb+srv://admin:<password>@cluster0.dzxmp.mongodb.net/dataLog', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    }); 
+}
 
 
 function animate() {
