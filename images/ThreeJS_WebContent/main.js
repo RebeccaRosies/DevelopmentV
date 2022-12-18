@@ -16,7 +16,8 @@ camera.position.z = 5;
 
 /* --------------------------------------------------- */
 function getData(){
-    fetch('mongodb+srv://admin:<password>@cluster0.dzxmp.mongodb.net/dataLog', {
+    console.log("data");
+    fetch('mongodb+srv://Admin:rebeccarosiesadmin@cluster0.dzxmp.mongodb.net/dataLog', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -27,6 +28,8 @@ function getData(){
         console.log(data);
     }); 
 }
+
+getData();
 
 
 function animate() {
