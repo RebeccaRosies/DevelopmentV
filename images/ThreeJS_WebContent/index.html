@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevV - threeJS</title>
+    <script src="https://threejs.org/build/three.js"></script>
+</head>
+
+<body>
+    <canvas id="c" class="webgl"></canvas>
+    <script src="./main.js"></script>
+    <script src="./WebGL.js"></script>
+    <script>
+        if (WebGL.isWebGLAvailable()) { // Initiate function or other initializations here 
+            console.log("anim")
+            animate();
+        } else {
+            const warning = WebGL.getWebGLErrorMessage();
+            document.getElementById('container').appendChild(warning);
+            console.log("error")
+        }
+    </script>
+    <!--  <h1>hello world</h1> -->
+</body>
+
+</html>
