@@ -4,26 +4,19 @@ const s = require("../server.js")
 
 
 describe('POST /dataLog', () => {
-    it('tests if the post endpoint posts an object', () => {
-        s().then((app) => {
+    it('tests if the post endpoint posts an object',  async () => {
+        const app = await s()
+        
             const request = supertest(app);
-
-            return request
+            const res = await request
                 .post('/dataLog')
+                .set('Accept', 'application/json')
                 .send({
                     speed: 2.1,
                     safe: true
                 })
-                .set('Accept', 'application/json')
-
-                .expect('Content-Type', /json/)
-
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    return done;
-                })
-
-        });
+            
+                expect(typeof res.body).toBe('object');
+                expect(res.statusCode).toBe(200);
     });
 })

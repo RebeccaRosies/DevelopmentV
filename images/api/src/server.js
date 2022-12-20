@@ -2,6 +2,8 @@ require('dotenv').config({
     path: './.env'
 });
 
+//const cors = require('cors');
+
 const {
     ObjectId
 } = require('mongodb');
@@ -33,6 +35,14 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+//app.use(cors({origin: '*'}));
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
+
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -48,7 +58,6 @@ app.get("/dataLog", async (req, res) => {
     try {
         const myData = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
         console.log(myData); // Print to the console
-
         //res.status(200).send(myData); //Send back the data with the response
         
         try{
