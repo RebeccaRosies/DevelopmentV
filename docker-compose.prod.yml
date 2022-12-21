@@ -1,0 +1,34 @@
+version: "3.2"
+services: 
+  api:
+    image: rebeccarosies/api
+    ports: 
+      - 80:3000
+    volumes:
+      - ./images/api/src:/usr/app/src
+    environment: 
+      DBURL: 
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: "--interval 60 --cleanup"
+
+  store: 
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ./_volumes/mongo:/data/db
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: ${DBUSER} 
+      MONGO_INITDB_ROOT_PASSWORD: ${DBPASSWORD}
+      MONGO_INITDB_DATABASE: ${DBNAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $DBUSER -d $DBNAME "]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    
+    

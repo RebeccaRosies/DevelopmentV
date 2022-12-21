@@ -74,9 +74,9 @@ app.get("/dataLog", async (req, res) => {
     } 
 })
 
-/* 
-@param name = first name of the person
-@param lastname = last name of the person
+/** 
+* @param speed = first name of the person
+* @param safe = last name of the person
  */
 
 app.post('/dataLog', async (req, res) => {
