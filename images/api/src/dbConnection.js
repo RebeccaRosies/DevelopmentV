@@ -6,7 +6,7 @@ const {
 //local mongo URL - use with docker
 //const url = process.env.DBURL ? process.env.DBURL : "mongodb://Admin:rebeccarosiesadmin@127.0.0.1:27017?retryWrites=true&w=majority";
 //online Mongodb URL - use in CI testing
-const url =  "mongodb+srv://admin:admin@cluster0.dzxmp.mongodb.net/?retryWrites=true&w=majority"
+const url =  "mongodb+srv://admin:rebeccarosiesadmin@cluster0.dzxmp.mongodb.net/?retryWrites=true&w=majority"
 
 console.log(url)
 const client = new MongoClient(url);
