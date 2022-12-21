@@ -82,9 +82,20 @@ app.get("/dataLog", async (req, res) => {
 app.post('/dataLog', async (req, res) => {
     try {
         if (req.body.speed == undefined || req.body.safe == undefined) {
-            res.status(400).send('bad result, missing name or lastname');
+            res.status(400).send('ERROR: missing speed or safe');
             return;
         }
+        else if (typeof req.body.speed != 'number'){
+            console.log("ERROR STRING");
+            res.status(400).send('ERROR: speed should be a number');
+            return;
+        }
+        else if (typeof req.body.safe != 'boolean'){
+            console.log("ERROR STRING");
+            res.status(400).send('ERROR: safe should be a boolean');
+            return;
+        }
+       console.log(req.body.speed);
 
         //construct a document
         let newData = {
@@ -95,7 +106,7 @@ app.post('/dataLog', async (req, res) => {
         console.log(newData)
         //insert into database
         let insertResult = await collections["les1"].insertOne(newData);
-        console.log(insertResult)
+        //console.log(insertResult)
         res.send(insertResult)
         return;
 
