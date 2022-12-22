@@ -2,8 +2,6 @@ require('dotenv').config({
     path: './.env'
 });
 
-//const cors = require('cors');
-
 const {
     ObjectId
 } = require('mongodb');
@@ -48,12 +46,19 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json())
 
+/** 
+* @returns hi world = (String)
+ */
 app.get("/", (request, response) => {
     response.send({
         message: "hi world"
     })
 })
 
+/** 
+* @returns speed = (Number) = Ex: 2.1 = How fast was a person going at a certain time and place 
+* @returns safe = (Boolean) = EX: true = Did the person feel safe
+ */
 app.get("/dataLog", async (req, res) => {
     try {
         const myData = await collections["les1"].find({}).toArray(); // Find document & convert it to an array
@@ -75,10 +80,9 @@ app.get("/dataLog", async (req, res) => {
 })
 
 /** 
-* @param speed = first name of the person
-* @param safe = last name of the person
+* @param speed = (Number) = Ex: 2.1 = How fast was a person going at a certain time and place 
+* @param safe = (Boolean) = EX: true = Did the person feel safe 
  */
-
 app.post('/dataLog', async (req, res) => {
     try {
         if (req.body.speed == undefined || req.body.safe == undefined) {
@@ -119,12 +123,13 @@ app.post('/dataLog', async (req, res) => {
     }
 })
 
+
+/* deletes all data */
 app.delete('/dataLog', async (req, res) => {
     try {
         const message = {
             deleted: "All data deleted"
         }
-        // Deleting the names
         const result = await collections["les1"].deleteMany();
         if (result.deletedCount >= 1) {
             res
@@ -143,6 +148,12 @@ app.delete('/dataLog', async (req, res) => {
     }
 })
 
+/** 
+* @param speed = (Number) = Ex: 2.1 = How fast was a person going at a certain time and place 
+* @param safe = (Boolean) = EX: true = Did the person feel safe 
+* @returns speed (Number) = Ex: 2.1 = How fast was a person going at a certain time and place
+* @returns safe (Boolean) = EX: true = Did the person feel safe 
+ */
 app.put("/dataLog/:id", async (req, res) => {
     // check for body data
     const error = {
@@ -156,7 +167,7 @@ app.put("/dataLog/:id", async (req, res) => {
             return;
         }
 
-        // Create a query for a challenge to update
+        // Create a query for data to update
         const query = {
             _id: ObjectId(req.params.id)
         };
@@ -164,13 +175,13 @@ app.put("/dataLog/:id", async (req, res) => {
             deleted: "Data updated"
         }
 
-        // update a name
+        // update the data
         const updateData = {
             speed: req.body.speed,
             safe: req.body.safe
         };
         console.log(query, updateData);
-        // Updating the name
+        // Updating the data
         const result = await collections["les1"].updateOne(query, {
             $set: updateData
         });

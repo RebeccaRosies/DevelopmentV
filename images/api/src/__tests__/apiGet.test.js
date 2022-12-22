@@ -1,13 +1,16 @@
 const supertest = require("supertest")
 const s = require("../server.js")
 
+
+//Tests the GET ENDPOINT
+
 describe('GET /dataLog', () => {
   beforeAll(async () => {
+    //connect to database
     app = await s();
   });
+  
   it('tests if the get endpoint makes a succesful connection', async() => {
-    //expect(2+2).toBe(4)
-     //const app = await s()
      const request = supertest(app);
 
       const res = await request
@@ -19,8 +22,6 @@ describe('GET /dataLog', () => {
     });
 
     it('tests if the appropiate error is sent when the endpoint is incorrect', async() => {
-      //expect(2+2).toBe(4)
-       //const app = await s()
        const request = supertest(app);
   
         const res = await request

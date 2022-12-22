@@ -6,10 +6,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-/* const material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
-}); 
- */
+
 let latestSafe = true;
 
 let materialSafe = new THREE.MeshBasicMaterial({
@@ -21,14 +18,12 @@ let materialUnsafe = new THREE.MeshBasicMaterial({
 let materialDefault = new THREE.MeshBasicMaterial({
     color: 0x0000ff
 }); 
-let cube = new THREE.Mesh(geometry, materialDefault);
 
-/* function assignMaterial(latestSafe){ */
+let cube = new THREE.Mesh(geometry, materialDefault);
 
 
 
 scene.add(cube);
-/* } */
 
 const light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
@@ -36,6 +31,12 @@ scene.add(light);
 camera.position.z = 5;
 
 /* --------------------------------------------------- */
+
+/** 
+* @returns an Array with objects containing: 
+*           speed = (Number) = Ex: 2.1 = How fast was a person going at a certain time and place 
+*           safe = (Boolean) = EX: true = Did the person feel safe
+ */
 function getData() {
     console.log("data");
     fetch('http://localhost/dataLog', {
@@ -49,7 +50,6 @@ function getData() {
             getSpeed(data);
         });
 };
-
 getData();
 
 let speedArray = [];
@@ -58,9 +58,7 @@ let safeArray = [];
 let latestspeed = 0;
 
 
-function getSpeed(data) {
-   // let speed = {};
-    
+function getSpeed(data) { 
     data.forEach((date, i) => {
         speedArray.push(date.speed);
         timesArray.push(i * 5);
@@ -90,12 +88,14 @@ const animation = new AnimationClip("cubespeed", -1, [track1] ); */
 
 
 function animate(time) {
+     // update the speed of the cube whenever the latest data comes through
     let goSpeed = speedArray[(speedArray.length-1)];
     console.log(latestSafe);
     requestAnimationFrame(animate);
     cube.rotation.x = goSpeed * time / 1000;
     cube.rotation.y = 0; 
 
+    // update the color of the cube whenever the latest data comes through
     if(latestSafe == NaN){
         cube.material.color.set(0x0000ff); 
     } else if (latestSafe == true) {
@@ -104,6 +104,7 @@ function animate(time) {
         cube.material.color.set(0xff0000); 
     }
     
+    //render the scene
     renderer.render(scene, camera);
 }
 animate();

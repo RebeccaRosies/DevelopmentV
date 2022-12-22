@@ -2,15 +2,15 @@ const supertest = require("supertest")
 const s = require("../server.js")
 
 
-
+//Tests the POST ENDPOINT
 
 describe('POST /dataLog', () => {
     beforeAll(async () => {
+        //connect to database
         app = await s();
       });
 
     it('tests if the post endpoint posts an object', async () => {
-        //const app = await s()
 
         const request = supertest(app);
         const res = await request
@@ -26,7 +26,6 @@ describe('POST /dataLog', () => {
     });
 
     it('tests if the appropriate error is send when the endpoint is incorrect', async () => {
-        //const app = await s()
 
         const request = supertest(app);
         const res = await request
@@ -42,7 +41,6 @@ describe('POST /dataLog', () => {
     });
 
     it('tests if the appropriate error is send if the datatype for speed is wrong', async () => {
-        //const app = await s()
 
         const request = supertest(app);
         const res = await request
@@ -59,7 +57,6 @@ describe('POST /dataLog', () => {
     });
 
     it('tests if the appropriate error is send if the datatype for safe is wrong', async () => {
-        //const app = await s()
 
         const request = supertest(app);
         const res = await request
@@ -76,7 +73,6 @@ describe('POST /dataLog', () => {
     });
 
     it('tests if the appropriate error is send if the dataobject is empty', async () => {
-        //const app = await s()
 
         const request = supertest(app);
         const res = await request
