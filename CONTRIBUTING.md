@@ -48,12 +48,19 @@ Set up and run the development environment on your local machine:
 3. You have `docker` installed and running on your machine
 
 ```shell
-docker-compose run
+docker-compose build
+docker-compose up
 ```
 
 ```shell
-cd ThreeJS_WebContent
-npm install
+cd images/api
+npm init -y
+npm run test
+```
+
+```shell
+cd images/ThreeJS_WebContent
+npm init -y
 npm run 
 ```
 
