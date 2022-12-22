@@ -19,21 +19,22 @@ Have a look at our 'contribution guidelines' if you want to contribute to the pr
   git clone https://github.com/RebeccaRosies/DevelopmentV.git
   ```
 2. Change the .env.template to .env and fill in with your respective data
+3. Change the database URL in dbConnection.js to your own database
 
-3. Run docker-compose, this takes care of installing dependencies, building packages and ensuring your workspace is dev-ready.
+4. Run docker-compose, this takes care of installing dependencies, building packages and ensuring your workspace is dev-ready.
 
   ```bash
  docker-compose build
  docker-compose up
   ```
   
-4. To push your own version of the image to docker hub run: 
+5. To push your own version of the image to docker hub run: 
 
   ```bash
   docker-compose -f docker-compose.prod.yml up --build 
     ```
     
-4. To run the testing with jest and super test: 
+6. To run the testing with jest and super test: 
 
   ```bash
  cd images/api
@@ -41,7 +42,7 @@ Have a look at our 'contribution guidelines' if you want to contribute to the pr
  npm run test
     ```
 
-5. Go to the ThreeJS folder, open a new terminal and install and run node:
+7. Go to the ThreeJS folder, open a new terminal and install and run node:
 
   ```bash
 npm init -y
