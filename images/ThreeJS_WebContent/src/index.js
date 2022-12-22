@@ -1,3 +1,5 @@
+
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -5,22 +7,93 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
+
+/* 
+//Shader Material //
+//The material code is based on the code from https://www.youtube.com/watch?v=EntBBM6nqQA //
+*/
+const cubeMaterialSafe = new THREE.ShaderMaterial({
+    wireframe:true,
+    vertexShader: `
+    void main()	{
+      // projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+
+      vec4 result;
+      result = vec4(position.x, sin(position.z/3.0)+position.y, position.z, 1.0);
+
+      gl_Position = projectionMatrix
+        * modelViewMatrix
+        * result;
+    }
+    `,
+    fragmentShader: `
+    void main() {
+      gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+    }
+    `,
+});
+
+const cubeMaterialUnsafe = new THREE.ShaderMaterial({
+    wireframe:true,
+    vertexShader: `
+    void main()	{
+      // projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+
+      vec4 result;
+      result = vec4(position.x, sin(position.z/4.0)+position.y, position.z, 1.0);
+
+      gl_Position = projectionMatrix
+        * modelViewMatrix
+        * result;
+    }
+    `,
+    fragmentShader: `
+    void main() {
+      gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+    `,
+});
+
+const cubeMaterialDefault = new THREE.ShaderMaterial({
+    wireframe:true,
+    vertexShader: `
+    void main()	{
+      // projectionMatrix, modelViewMatrix, position -> passed in from Three.js
+
+      vec4 result;
+      result = vec4(position.x, sin(position.z/5.0)+position.y, position.z, 1.0);
+
+      gl_Position = projectionMatrix
+        * modelViewMatrix
+        * result;
+    }
+    `,
+    fragmentShader: `
+    void main() {
+      gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+    }
+    `,
+});
+
 
 let latestSafe = true;
 
-let materialSafe = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
+//Basic materials (no shaders)
+/* let materialSafe = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    wireframe:true
 }); 
 let materialUnsafe = new THREE.MeshBasicMaterial({
-    color: 0xff0000
+    color: 0xff0000,
+    wireframe:true
 }); 
 let materialDefault = new THREE.MeshBasicMaterial({
-    color: 0x0000ff
-}); 
+    color: 0x0000ff,
+    wireframe:true
+});  */
 
-let cube = new THREE.Mesh(geometry, materialDefault);
-
+let cube = new THREE.Mesh(geometry, cubeMaterialSafe);
 
 
 scene.add(cube);
@@ -97,11 +170,11 @@ function animate(time) {
 
     // update the color of the cube whenever the latest data comes through
     if(latestSafe == NaN){
-        cube.material.color.set(0x0000ff); 
+        cube.material = cubeMaterialDefault; 
     } else if (latestSafe == true) {
-        cube.material.color.set(0x00ff00); 
+         cube.material = cubeMaterialUnsafe;
     } else if (latestSafe == false) {
-        cube.material.color.set(0xff0000); 
+         cube.material = cubeMaterialUnsafe; 
     }
     
     //render the scene
